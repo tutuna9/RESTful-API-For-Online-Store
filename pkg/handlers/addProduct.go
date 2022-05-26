@@ -2,16 +2,15 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 
-	"example.com/RESTapi/pkg/mocks"
 	"example.com/RESTapi/pkg/models"
 )
 
-func AddProduct(w http.ResponseWriter, r *http.Request) {
+func (h handler) AddProduct(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	body, err := ioutil.ReadAll(r.Body)
 
@@ -22,10 +21,11 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 	var cart models.Cart
 	json.Unmarshal(body, &cart)
 
-	cart.Id = rand.Intn(100)
-	mocks.Carts = append(mocks.Carts, cart)
+	if result := h.DB.Create(&cart); result.Error != nil {
+		fmt.Println(result.Error)
+	}
 
-	w.Header().Add("Content-type", "aplication/json")
+	w.Header().Add("Content-type", "alication/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode("Added")
 }

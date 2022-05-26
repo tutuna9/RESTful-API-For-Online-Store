@@ -2,16 +2,15 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 
-	"example.com/RESTapi/pkg/mocks"
 	"example.com/RESTapi/pkg/models"
 )
 
-func AddTransaction(w http.ResponseWriter, r *http.Request) {
+func (h handler) AddTransaction(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	body, err := ioutil.ReadAll(r.Body)
 
@@ -22,8 +21,9 @@ func AddTransaction(w http.ResponseWriter, r *http.Request) {
 	var transaction models.Transaction
 	json.Unmarshal(body, &transaction)
 
-	transaction.Id = rand.Intn(100)
-	mocks.Transactions = append(mocks.Transactions, transaction)
+	if result := h.DB.Create(&transaction); result.Error != nil {
+		fmt.Println(result.Error)
+	}
 
 	w.Header().Add("Content-type", "aplication/json")
 	w.WriteHeader(http.StatusCreated)
