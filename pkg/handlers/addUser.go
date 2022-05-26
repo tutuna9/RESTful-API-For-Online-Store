@@ -2,16 +2,15 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 
-	"example.com/RESTapi/pkg/mocks"
 	"example.com/RESTapi/pkg/models"
 )
 
-func AddUser(w http.ResponseWriter, r *http.Request) {
+func (h handler) AddUser(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	body, err := ioutil.ReadAll(r.Body)
 
@@ -22,8 +21,9 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	json.Unmarshal(body, &user)
 
-	user.Id = rand.Intn(100)
-	mocks.Users = append(mocks.Users, user)
+	if result := h.DB.Create(&user); result.Error != nil {
+		fmt.Println(result.Error)
+	}
 
 	w.Header().Add("Content-type", "aplication/json")
 	w.WriteHeader(http.StatusCreated)

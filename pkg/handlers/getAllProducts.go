@@ -2,23 +2,25 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
-	"example.com/RESTapi/pkg/mocks"
+	"example.com/RESTapi/pkg/models"
 	"github.com/gorilla/mux"
 )
 
-func GetAllProducts(w http.ResponseWriter, r *http.Request) {
+func (h handler) GetAllProducts(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
 
-	for _, product := range mocks.Products {
-		if product.CategoryId == id {
-			w.Header().Add("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(product)
-			break
-		}
+	var product models.Product
+
+	if result := h.DB.First(&product, id); result.Error != nil {
+		fmt.Println(result.Error)
 	}
+
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(product)
 }
