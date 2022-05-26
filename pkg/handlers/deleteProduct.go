@@ -9,15 +9,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetBook(w http.ResponseWriter, r *http.Request) {
+func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
 
-	for _, book := range mocks.Books {
-		if book.Id == id {
+	for index, product := range mocks.Products {
+		if product.Id == id {
+			mocks.Products = append(mocks.Products[:index], mocks.Products[index+1:]...)
+
 			w.Header().Add("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(book)
+			json.NewEncoder(w).Encode("Deleted")
 			break
 		}
 	}
