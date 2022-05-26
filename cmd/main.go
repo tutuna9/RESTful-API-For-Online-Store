@@ -11,9 +11,9 @@ import (
 func main() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/products", handlers.GetAllProducts).Methods(http.MethodGet)
+	router.HandleFunc("/products/{id}", handlers.GetAllProducts).Methods(http.MethodGet)
 	router.HandleFunc("/cart/products", handlers.AddProduct).Methods(http.MethodPost)
-	router.HandleFunc("/cart/products/{id}", handlers.GetProduct).Methods(http.MethodGet)
+	router.HandleFunc("/cart/products", handlers.GetProduct).Methods(http.MethodGet)
 	router.HandleFunc("/cart/products/{id}", handlers.DeleteProduct).Methods(http.MethodDelete)
 	router.HandleFunc("/transactions", handlers.AddTransaction).Methods(http.MethodPost)
 	router.HandleFunc("/users", handlers.AddUser).Methods(http.MethodPost)

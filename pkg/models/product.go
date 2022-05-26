@@ -3,7 +3,12 @@ package models
 type Product struct {
 	CategoryId int    `json:"categoryid"`
 	Id         int    `json:"id"`
-	Name       string `json:"title"`
+	Name       string `json:"name"`
+}
+
+type Cart struct {
+	Id   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 type Transaction struct {
