@@ -11,11 +11,13 @@ import (
 func main() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/books", handlers.GetAllBooks).Methods(http.MethodGet)
-	router.HandleFunc("/books", handlers.AddBook).Methods(http.MethodPost)
-	router.HandleFunc("/books/{id}", handlers.GetBook).Methods(http.MethodGet)
-	router.HandleFunc("/books/{id}", handlers.UpdateBook).Methods(http.MethodPut)
-	router.HandleFunc("/books/{id}", handlers.DeleteBook).Methods(http.MethodDelete)
+	router.HandleFunc("/products", handlers.GetAllProducts).Methods(http.MethodGet)
+	router.HandleFunc("/cart/products", handlers.AddProduct).Methods(http.MethodPost)
+	router.HandleFunc("/cart/products/{id}", handlers.GetProduct).Methods(http.MethodGet)
+	router.HandleFunc("/cart/products/{id}", handlers.DeleteProduct).Methods(http.MethodDelete)
+	router.HandleFunc("/transactions", handlers.AddTransaction).Methods(http.MethodPost)
+	router.HandleFunc("/users", handlers.AddUser).Methods(http.MethodPost)
+	router.HandleFunc("/users/{id}", handlers.GetUser).Methods(http.MethodGet)
 
 	log.Println("API is running!")
 	http.ListenAndServe(":4000", router)

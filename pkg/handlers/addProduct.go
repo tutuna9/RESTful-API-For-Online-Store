@@ -11,7 +11,7 @@ import (
 	"example.com/RESTapi/pkg/models"
 )
 
-func AddBook(w http.ResponseWriter, r *http.Request) {
+func AddProduct(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	body, err := ioutil.ReadAll(r.Body)
 
@@ -19,13 +19,13 @@ func AddBook(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err)
 	}
 
-	var book models.Book
-	json.Unmarshal(body, &book)
+	var product models.Product
+	json.Unmarshal(body, &product)
 
-	book.Id = rand.Intn(100)
-	mocks.Books = append(mocks.Books, book)
+	product.Id = rand.Intn(100)
+	mocks.Products = append(mocks.Products, product)
 
 	w.Header().Add("Content-type", "aplication/json")
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode("Created")
+	json.NewEncoder(w).Encode("Added")
 }
