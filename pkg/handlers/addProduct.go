@@ -19,11 +19,11 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err)
 	}
 
-	var product models.Product
-	json.Unmarshal(body, &product)
+	var cart models.Cart
+	json.Unmarshal(body, &cart)
 
-	product.Id = rand.Intn(100)
-	mocks.Products = append(mocks.Products, product)
+	cart.Id = rand.Intn(100)
+	mocks.Carts = append(mocks.Carts, cart)
 
 	w.Header().Add("Content-type", "aplication/json")
 	w.WriteHeader(http.StatusCreated)
